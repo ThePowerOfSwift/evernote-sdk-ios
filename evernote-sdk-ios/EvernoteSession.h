@@ -27,7 +27,7 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 #import "EDAM.h"
 #import "ENOAuthViewController.h"
 
@@ -39,7 +39,11 @@ typedef void (^EvernoteAuthCompletionHandler)(NSError *error);
 /*
  * Evernote Session, using OAuth to authenticate.
  */
+#ifdef __MAC_OS_X_VERSION_MAX_ALLOWED
+@interface EvernoteSession : NSObject
+#else
 @interface EvernoteSession : NSObject <ENOAuthViewControllerDelegate>
+#endif
 
 @property (nonatomic, retain) NSString *host;
 @property (nonatomic, retain) NSString *consumerKey;
@@ -76,9 +80,15 @@ typedef void (^EvernoteAuthCompletionHandler)(NSError *error);
 // Get the singleton shared session.
 + (EvernoteSession *)sharedSession;
 
+#ifdef __MAC_OS_X_VERSION_MAX_ALLOWED
+- (void)authenticateWithCompletionHandler:(EvernoteAuthCompletionHandler)completionHandler;
+- (BOOL)handleOpenURL:(NSURL *)url;
+#else
 // Authenticate, calling the given handler upon completion.
 - (void)authenticateWithViewController:(UIViewController *)viewController
                      completionHandler:(EvernoteAuthCompletionHandler)completionHandler;
+#endif
+//
 
 // Clear authentication.
 - (void)logout;
@@ -99,8 +109,10 @@ typedef void (^EvernoteAuthCompletionHandler)(NSError *error);
 // Exposed for unit testing.
 - (void)verifyConsumerKeyAndSecret;
 
+#ifndef __MAC_OS_X_VERSION_MAX_ALLOWED
 // Abstracted into a method to support unit testing.
 - (void)openOAuthViewControllerWithURL:(NSURL *)authorizationURL;
+#endif
 
 // Abstracted into a method to support unit testing.
 - (void)saveCredentialsWithEdamUserId:(NSString *)edamUserId 

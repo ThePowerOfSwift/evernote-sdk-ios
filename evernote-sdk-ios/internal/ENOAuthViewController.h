@@ -6,8 +6,9 @@
 //  Copyright (c) 2012 n/a. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 
+#ifndef __MAC_OS_X_VERSION_MAX_ALLOWED
 @class ENOAuthViewController;
 
 @protocol ENOAuthViewControllerDelegate <NSObject>
@@ -25,3 +26,4 @@
                       delegate:(id<ENOAuthViewControllerDelegate>)delegate;
 
 @end
+#endif

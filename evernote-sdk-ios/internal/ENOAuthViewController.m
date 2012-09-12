@@ -7,6 +7,7 @@
 //
 
 #import "ENOAuthViewController.h"
+#ifndef __MAC_OS_X_VERSION_MAX_ALLOWED
 
 @interface ENOAuthViewController() <UIWebViewDelegate>
 
@@ -113,3 +114,5 @@
 }
 
 @end
+#endif
+
